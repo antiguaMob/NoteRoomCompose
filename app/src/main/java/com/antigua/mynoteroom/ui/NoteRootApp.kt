@@ -1,7 +1,6 @@
 package com.antigua.mynoteroom.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +16,6 @@ import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
 //    Home, Note
 //}
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteRootApp (
     homeViewModel: HomeViewModelAbstract,
