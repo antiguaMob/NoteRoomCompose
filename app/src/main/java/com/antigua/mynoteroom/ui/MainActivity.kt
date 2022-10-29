@@ -12,7 +12,9 @@ package com.antigua.mynoteroom.ui
 
 // Part 2 - Create a Simple Note App: Test Room Database for Android
 // https://www.youtube.com/watch?v=x-IQcIg96-8&list=PLc2U33zPL5QL1_ikO70XQQUgByhPYDOzt&index=2
-//
+
+// Part 3 - Create a Simple Note App: Improved UI - Jetpack Compose
+// https://www.youtube.com/watch?v=9qFiOxG4kpk&list=PLc2U33zPL5QL1_ikO70XQQUgByhPYDOzt&index=3
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,12 +27,16 @@ import com.antigua.mynoteroom.ui.theme.MyNoteRoomTheme
 import com.antigua.mynoteroom.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+enum class Screen{
+    Home, Note
+}
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val homeViewModel : HomeViewModel by viewModels()
+        val homeViewModel: HomeViewModel by viewModels()
 
         setContent {
             NoteRootApp(homeViewModel = homeViewModel)

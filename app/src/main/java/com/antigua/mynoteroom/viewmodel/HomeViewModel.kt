@@ -1,5 +1,8 @@
 package com.antigua.mynoteroom.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.antigua.mynoteroom.data.repository.NoteRepository
 import com.antigua.mynoteroom.model.NoteEntity
@@ -11,10 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface HomeViewModelAbstract {
+    val selectedNoteState: State<NoteEntity?>
     val noteListFlow: Flow<List<NoteEntity>>
     fun addNote(note : NoteEntity)
     fun updateNote(note : NoteEntity)
     fun deleteNote(note : NoteEntity)
+    fun selectedNote(note: NoteEntity)
 }
 
 @HiltViewModel
@@ -24,6 +29,10 @@ class HomeViewModel
 ): ViewModel(), HomeViewModelAbstract{
 
     private  val ioScope = CoroutineScope(Dispatchers.IO)
+    private val _selectedState: MutableState<NoteEntity?> = mutableStateOf(null)
+    override val selectedNoteState: State<NoteEntity?>
+        get() = _selectedState
+
 
     override val noteListFlow: Flow<List<NoteEntity>> = noteRepository.getAllFlow()
 
@@ -43,5 +52,9 @@ class HomeViewModel
         ioScope.launch {
             noteRepository.delete(note = note)
         }
+    }
+
+    override fun selectedNote(note: NoteEntity) {
+        _selectedState.value = note
     }
 }

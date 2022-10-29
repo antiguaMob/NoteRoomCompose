@@ -3,11 +3,9 @@
 
 package com.antigua.mynoteroom.ui.home
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
+
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,10 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,13 +32,13 @@ private  enum class PopupState{
     Open,Close,Edit
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModelAbstract,
-    //onClickNote: (NoteEntity) -> Unit,
-   // onClickAddNote: () -> Unit,
+    //onClickAddNote: (NoteEntity) -> Unit,
+    onClickNote: (NoteEntity) -> Unit,
+
 ){
     val noteListState = homeViewModel.noteListFlow.collectAsState(initial = listOf())
     val txtState = rememberSaveable{ mutableStateOf("") }
@@ -51,8 +46,10 @@ fun HomeScreen(
     val popupState = rememberSaveable { mutableStateOf(PopupState.Close) }
 
 
-    Scaffold {
-        LazyColumn {
+    Scaffold  { contentPadding ->  // New Compose fitch
+        LazyColumn(
+            modifier = Modifier.padding(contentPadding)
+        ) {
             items(noteListState.value.size) { index ->
                 val note = noteListState.value[index]
 
@@ -78,8 +75,8 @@ fun HomeScreen(
 //                        },
 //                    )
 //**************************************************************************************************
-                    .pointerInput(Unit){
-                        detectTapGestures (
+                    .pointerInput(Unit) {
+                        detectTapGestures(
 //                          onPress = { /* Called when the gesture starts */ },
 //                          onDoubleTap = { /* Called on Double Tap */ },
 //                          onLongPress = { /* Called on Long Press */ },
@@ -88,8 +85,10 @@ fun HomeScreen(
                             onTap = {
                                 noteIdState.value = note.roomId
                                 txtState.value = note.text
-                                popupState.value = PopupState.Edit
-                        },
+                                //popupState.value = PopupState.Edit
+                                homeViewModel.selectedNote(note)
+                                onClickNote(note)
+                            },
                             onLongPress = {
                                 // delete the note on long click
                                 homeViewModel.deleteNote(note)
@@ -167,6 +166,8 @@ fun HomeScreen(
 fun PreviewHomeScreen(){
     HomeScreen(
         homeViewModel = object : HomeViewModelAbstract {
+            override val selectedNoteState: State<NoteEntity?>
+                get() = mutableStateOf(null)
             override val noteListFlow: Flow<List<NoteEntity>>
                 get() = flowOf(listOf(
                     NoteEntity(text = "note 1"),
@@ -177,11 +178,12 @@ fun PreviewHomeScreen(){
                 ))
 
             override fun addNote(note: NoteEntity){}
-
             override fun updateNote(note: NoteEntity){}
-
             override fun deleteNote(note: NoteEntity){}
-
-        }
+            override fun selectedNote(note: NoteEntity) {
+                TODO("Not yet implemented")
+            }
+        },
+        onClickNote = {}
     )
 }
