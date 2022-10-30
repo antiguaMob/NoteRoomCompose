@@ -3,4 +3,6 @@
     <string name="screen_home_button_add_note">Add Note</string>
     <string name="screen_home_popup_button_dismiss">Dismiss</string>
     <string name="screen_home_popup_button_save">Save</string>
+    <string name="screen_home_swipe_delete_note">Delete Note</string>
+
 </resources>
