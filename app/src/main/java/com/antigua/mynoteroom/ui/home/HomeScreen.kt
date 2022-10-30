@@ -49,6 +49,7 @@ fun HomeScreen(
         ) {
             items(noteListState.value.size) { index ->
                 val note = noteListState.value[index]
+                NoteListItem(onClick = { /*TODO*/ }, onDelete = { /*TODO*/ }, note = note)
 
                 Box(modifier = Modifier
                     .fillMaxWidth()
