@@ -49,66 +49,19 @@ fun HomeScreen(
         ) {
             items(noteListState.value.size) { index ->
                 val note = noteListState.value[index]
-                NoteListItem(onClick = { /*TODO*/ }, onDelete = { /*TODO*/ }, note = note)
-
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-//**************************************************************************************************
-//                    .combinedClickable(
-//                        onClick = {
-//                            noteIdState.value = note.roomId
-//                            txtState.value = note.text
-//                            popupState.value = PopupState.Edit
-//                        },
-//                        onLongClick = {
-//                            // delete the note on long click
-//                            homeViewModel.deleteNote(note)
-//                        })
-//**************************************************************************************************
-//                    .clickable(
-//                        onClick = {
-//                            noteIdState.value = note.roomId
-//                            txtState.value = note.text
-//                            popupState.value = PopupState.Edit
-//                        },
-//                    )
-//**************************************************************************************************
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-//                          onPress = { /* Called when the gesture starts */ },
-//                          onDoubleTap = { /* Called on Double Tap */ },
-//                          onLongPress = { /* Called on Long Press */ },
-//                          onTap = { /* Called on Tap */ }
-
-                            onTap = {
-                                noteIdState.value = note.roomId
-                                txtState.value = note.text
-                                //popupState.value = PopupState.Edit
-                                homeViewModel.selectedNote(note)
-                                onClickNote(note)
-                            },
-                            onLongPress = {
-                                // delete the note on long click
-                                homeViewModel.deleteNote(note)
-                            }
-                        )
-                    }
-//**************************************************************************************************
-                    .height(54.dp)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(start = 16.dp, end = 16.dp),
-                        text = note.text,
-                        maxLines = 1,
-                    )
-                    Spacer(modifier = Modifier
-                        .height(0.7.dp)
-                        .fillMaxWidth()
-                        .background(color = Color.Gray.copy(alpha = 0.54f))
-                        .align(Alignment.BottomCenter))
-                }
+                NoteListItem(
+                    onClick = {
+                        noteIdState.value = note.roomId
+                        txtState.value = note.text
+                        homeViewModel.selectedNote(note)
+                        onClickNote(note)
+                    },
+                    onDelete = {
+                        // delete the note on long click
+                        homeViewModel.deleteNote(note)
+                    },
+                    note = note
+                )
             }
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
