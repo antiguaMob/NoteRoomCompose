@@ -16,14 +16,12 @@ package com.antigua.mynoteroom.ui
 // Part 3 - Create a Simple Note App: Improved UI - Jetpack Compose
 // https://www.youtube.com/watch?v=9qFiOxG4kpk&list=PLc2U33zPL5QL1_ikO70XQQUgByhPYDOzt&index=3
 
+// Part 4 - UI test   ?
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.antigua.mynoteroom.ui.theme.MyNoteRoomTheme
 import com.antigua.mynoteroom.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,18 +39,5 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoteRootApp(homeViewModel = homeViewModel)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyNoteRoomTheme {
-        Greeting("Android")
     }
 }
