@@ -11,8 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.antigua.mynoteroom.NOTE_BUTTON_BACK
+import com.antigua.mynoteroom.NOTE_BUTTON_DONE
+import com.antigua.mynoteroom.NOTE_TEXT_FIELD
 import com.antigua.mynoteroom.R
 import com.antigua.mynoteroom.model.NoteEntity
 import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
@@ -28,9 +32,11 @@ fun NoteScreen(
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Edit")},
+                title = { Text(text = stringResource(R.string.note_screen_edit_text))},
                 actions = {
-                    IconButton(onClick = {
+                    IconButton(
+                        modifier = Modifier.testTag(NOTE_BUTTON_DONE),
+                        onClick = {
                         note?.let {
                             viewModel.addOrUpdateNote(it.copy(text = txtState.value))
                         } ?: run{
@@ -47,7 +53,9 @@ fun NoteScreen(
                    // Spacer(modifier = Modifier.width(8.dp))
                 },
                 navigationIcon = {
-                    IconButton(onClick = onClickClose) {
+                    IconButton(
+                        modifier = Modifier.testTag(NOTE_BUTTON_BACK),
+                        onClick = onClickClose) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
                             contentDescription = stringResource(
@@ -67,6 +75,7 @@ fun NoteScreen(
         ) {
             BasicTextField(
                 modifier = Modifier
+                    .testTag(NOTE_TEXT_FIELD)
                     .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 10.dp)
                     .fillMaxWidth()
                     .fillMaxHeight(),

@@ -12,12 +12,12 @@ import com.antigua.mynoteroom.ui.note.NoteScreen
 import com.antigua.mynoteroom.ui.theme.MyNoteRoomTheme
 import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
 
-//enum class Screen {
-//    Home, Note
-//}
+enum class Screen {
+    Home, Note
+}
 
 @Composable
-fun NoteRootApp (
+fun NoteRoomApp (
     homeViewModel: HomeViewModelAbstract,
 ){
     val navController = rememberNavController()
@@ -27,10 +27,6 @@ fun NoteRootApp (
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-//            HomeScreen(
-//                homeViewModel = homeViewModel,
-//               onClickNote = navController.navigate(Screen.Note.name)
-//            )
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.name,

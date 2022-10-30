@@ -18,9 +18,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.antigua.mynoteroom.HOME_BUTTON_NOTE_ADD
+import com.antigua.mynoteroom.HOME_ITEM_NOTE
+import com.antigua.mynoteroom.HOME_TITLE
 import com.antigua.mynoteroom.R
 import com.antigua.mynoteroom.model.NoteEntity
 import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
@@ -46,7 +50,9 @@ fun HomeScreen(
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(title = {
-              Text(text = stringResource(id = R.string.app_name))  
+              Text(
+                  modifier = Modifier.testTag(HOME_TITLE),
+                  text = stringResource(id = R.string.app_name))
             },
                 navigationIcon = {
                     Icon(
@@ -78,7 +84,9 @@ fun HomeScreen(
                     }
                 )
                 NoteListItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier
+                        .testTag(HOME_ITEM_NOTE)
+                        .animateItemPlacement(),
                     onClick = {
                         noteIdState.value = note.roomId
                         txtState.value = note.text
@@ -101,6 +109,7 @@ fun HomeScreen(
                 ) {
                     Button(
                         modifier = Modifier
+                            .testTag(HOME_BUTTON_NOTE_ADD)
                             .align(Alignment.Center),
                         onClick = {
                             homeViewModel.resetSelectedNote()
@@ -122,18 +131,19 @@ fun PreviewHomeScreen(){
             override val selectedNoteState: State<NoteEntity?>
                 get() = mutableStateOf(null)
             override val noteListFlow: Flow<List<NoteEntity>>
-                get() = flowOf(listOf(
-                    NoteEntity(text = "note 1"),
-                    NoteEntity(text = "note 2"),
-                    NoteEntity(text = "note 3"),
-                    NoteEntity(text = "note 4"),
-                    NoteEntity(text = "note 5"),
-                ))
+                get() = flowOf(
+                    listOf(
+                        NoteEntity(text = "note 1"),
+                        NoteEntity(text = "note 2"),
+                        NoteEntity(text = "note 3"),
+                        NoteEntity(text = "note 4"),
+                        NoteEntity(text = "note 5"),
+                    )
+                )
 
             override fun addOrUpdateNote(note: NoteEntity){}
             override fun deleteNote(note: NoteEntity){}
             override fun selectedNote(note: NoteEntity) {}
-
             override fun resetSelectedNote() {}
         },
         onClickNote = {},

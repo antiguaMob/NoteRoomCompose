@@ -25,9 +25,6 @@ import androidx.activity.viewModels
 import com.antigua.mynoteroom.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-enum class Screen{
-    Home, Note
-}
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,7 +34,7 @@ class MainActivity : ComponentActivity() {
         val homeViewModel: HomeViewModel by viewModels()
 
         setContent {
-            NoteRootApp(homeViewModel = homeViewModel)
+            NoteRoomApp(homeViewModel = homeViewModel)
         }
     }
 }
