@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.antigua.mynoteroom.ui.home.HomeScreen
-import com.antigua.mynoteroom.ui.home.NoteScreen
+import com.antigua.mynoteroom.ui.note.NoteScreen
 import com.antigua.mynoteroom.ui.theme.MyNoteRoomTheme
 import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
 
@@ -41,17 +41,17 @@ fun NoteRootApp (
                             onClickNote = {
                                 navController.navigate(Screen.Note.name)
                             },
-//                            onClickAddNote = {
-//                                navController.navigate(Screen.Note.name)
-//                            }
+                            onClickAddNote = {
+                                navController.navigate(Screen.Note.name)
+                            }
                         )
                     }
                     composable(Screen.Note.name) {
                         NoteScreen(
                             viewModel = homeViewModel,
-//                            onClickClose = {
-//                                navController.popBackStack()
-//                            },
+                            onClickClose = {
+                                navController.popBackStack()
+                            },
                         )
                     }
                 })

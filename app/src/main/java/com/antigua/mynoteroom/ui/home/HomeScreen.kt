@@ -28,23 +28,20 @@ import com.antigua.mynoteroom.viewmodel.HomeViewModelAbstract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-private  enum class PopupState{
-    Open,Close,Edit
-}
 
 //@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModelAbstract,
-    //onClickAddNote: (NoteEntity) -> Unit,
     onClickNote: (NoteEntity) -> Unit,
+    onClickAddNote: () -> Unit,
+
 
 ){
     val noteListState = homeViewModel.noteListFlow.collectAsState(initial = listOf())
     val txtState = rememberSaveable{ mutableStateOf("") }
     val noteIdState :MutableState<Long?> = rememberSaveable{ mutableStateOf(null) }
-    val popupState = rememberSaveable { mutableStateOf(PopupState.Close) }
-
 
     Scaffold  { contentPadding ->  // New Compose fitch
         LazyColumn(
@@ -118,45 +115,13 @@ fun HomeScreen(
                         modifier = Modifier
                             .align(Alignment.Center),
                         onClick = {
-                            popupState.value = PopupState.Open
+                            homeViewModel.resetSelectedNote()
+                            onClickAddNote()
                         }) {
                         Text(text = stringResource(R.string.screen_home_button_add_note))
                     }
                 }
-
-
             }
-        }
-        when (popupState.value){
-            PopupState.Open ->{
-              NotePopup(
-                    onClickDismiss = {
-                        popupState.value = PopupState.Close
-                    },
-                    onClickSave = {
-                        homeViewModel.addNote(note = NoteEntity(text = it))
-                        popupState.value = PopupState.Close
-                    }
-                )
-            }
-            PopupState.Edit ->{
-                NotePopup (
-                   txtState = txtState,
-                   onClickDismiss = {
-                     popupState.value = PopupState.Close
-                   },
-                   onClickSave = {
-                       homeViewModel.updateNote(
-                           note = NoteEntity(
-                                roomId = noteIdState.value,
-                                text = it
-                           )
-                       )
-                       popupState.value = PopupState.Close
-                   }
-               )
-            }
-            PopupState.Close ->{}
         }
     }
 }
@@ -177,13 +142,13 @@ fun PreviewHomeScreen(){
                     NoteEntity(text = "note 5"),
                 ))
 
-            override fun addNote(note: NoteEntity){}
-            override fun updateNote(note: NoteEntity){}
+            override fun addOrUpdateNote(note: NoteEntity){}
             override fun deleteNote(note: NoteEntity){}
-            override fun selectedNote(note: NoteEntity) {
-                TODO("Not yet implemented")
-            }
+            override fun selectedNote(note: NoteEntity) {}
+
+            override fun resetSelectedNote() {}
         },
-        onClickNote = {}
+        onClickNote = {},
+        onClickAddNote = {},
     )
 }

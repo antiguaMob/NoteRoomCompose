@@ -16,10 +16,10 @@ import javax.inject.Inject
 interface HomeViewModelAbstract {
     val selectedNoteState: State<NoteEntity?>
     val noteListFlow: Flow<List<NoteEntity>>
-    fun addNote(note : NoteEntity)
-    fun updateNote(note : NoteEntity)
+    fun addOrUpdateNote(note : NoteEntity)
     fun deleteNote(note : NoteEntity)
     fun selectedNote(note: NoteEntity)
+    fun resetSelectedNote()
 }
 
 @HiltViewModel
@@ -37,17 +37,16 @@ class HomeViewModel
     override val noteListFlow: Flow<List<NoteEntity>> = noteRepository.getAllFlow()
 
 
-    override fun addNote(note: NoteEntity) {
+    override fun addOrUpdateNote(note: NoteEntity) {
         ioScope.launch {
-            noteRepository.insert(note = note)
+            if (note.roomId == null){
+                noteRepository.insert(note = note)
+            } else {
+                noteRepository.update(note = note)
+            }
         }
     }
 
-    override fun updateNote(note: NoteEntity) {
-        ioScope.launch {
-            noteRepository.update(note = note)
-        }
-    }
     override fun deleteNote(note: NoteEntity){
         ioScope.launch {
             noteRepository.delete(note = note)
@@ -56,5 +55,9 @@ class HomeViewModel
 
     override fun selectedNote(note: NoteEntity) {
         _selectedState.value = note
+    }
+
+    override fun resetSelectedNote() {
+        _selectedState.value = null
     }
 }
